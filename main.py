@@ -16,16 +16,11 @@ def main():
     
     G = functions.lerArquivoGrafos(path)
     
-    tracemalloc.start()
-    
     if(functions.gerarArquivoSaida(G) == True):
         print("\n✅ Arquivo de saída salvo com sucesso! ✅\n")
     else:
         print("❌ Erro ao salvar o arquivo de saída! ❌")
         exit()
-    
-    current, peak = tracemalloc.get_traced_memory()
-    print(current,peak, f'{peak / 10**3}KB')
  
 
         
@@ -38,7 +33,7 @@ def main():
         print("\n ❌ OPS! Essa opção não existe. ❌\n\nPor favor, tente novamente:")
         visualizacao = (input("Opção: "))
     
-    tracemalloc.clear_traces()
+    tracemalloc.start()
     
     if(visualizacao == '1'):
         matriz = functions.criarMatriz(G)
@@ -55,8 +50,8 @@ def main():
         lista = functions.criarLista(G)
         print("✅ Lista de adjacências salva com sucesso! ✅\n") if lista == True else print("\n❌ Erro ao salvar a lista de adjacências! ❌\n")
     
-    second_size, second_peak = tracemalloc.get_traced_memory()
-    print(second_size,second_peak, f'{second_peak / 10**3}KB')
+    second_size, consumoMem = tracemalloc.get_traced_memory()
+    print('Consumo de memória: ', f'{"{:.3f}".format(consumoMem / 10**6)}MB')
     # stopping the library
     tracemalloc.stop()
     

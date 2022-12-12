@@ -4,9 +4,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import shutil
+from tqdm import tqdm
+
 
 def limparInicio():
-    shutil.rmtree('resultados')
+    if os.path.isdir("resultados"):
+        shutil.rmtree('resultados')
+
 
 def validarArquivo(path):
     return os.path.isfile(path)
@@ -41,7 +45,7 @@ def lerArquivoGrafos(path):
         "node_2",
         create_using=nx.Graph()
     )
-    
+
     return G
 
 
@@ -49,45 +53,48 @@ def gerarArquivoSaida(G):
     try:
         if not os.path.isdir("resultados"):
             os.makedirs("resultados")
-            
+
         with open('resultados/saida.txt', 'w') as f:
             f.write("# n = {0}\n".format(G.number_of_nodes()))
             f.write("# m = {0}\n".format(G.number_of_edges()))
             for i, count in G.degree():
                 f.write("{0} {1}\n".format(i, count))
-        
+
         return True
-    
+
     except Exception as e:
         print(e)
         return False
-   
 
 
 # Criar matriz de adjacência
 def criarMatriz(G):
+    # np.set_printoptions(threshold=10000)
     try:
         if not os.path.isdir("resultados/visualizacao"):
             os.makedirs("resultados/visualizacao")
-            
-        A = nx.to_scipy_sparse_array(G)
-        dense = A.todense()
-        np.savetxt("resultados/visualizacao/matriz.txt", dense, fmt='%s', delimiter=",")
-        
+
+        A = nx.to_numpy_matrix(G)
+        print("\n")
+        with open('resultados/visualizacao/matriz.txt', 'w') as f:
+            for i, line in tqdm(enumerate(A), total=len(A)):
+                np.savetxt(f, line, fmt='%.0f')
+
         return True
 
     except Exception as e:
         print(e)
         return False
+
 
 # Criar lista de adjacência
 def criarLista(G):
     try:
         if not os.path.isdir("resultados/visualizacao"):
             os.makedirs("resultados/visualizacao")
-            
+
         nx.write_adjlist(G, "resultados/visualizacao/lista.txt")
-    
+
         return True
 
     except Exception as e:
