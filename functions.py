@@ -5,6 +5,7 @@ import numpy as np
 import os
 import shutil
 from tqdm import tqdm
+import matplotlib.pyplot as plt
 
 
 def limparInicio():
@@ -96,6 +97,52 @@ def criarLista(G):
         nx.write_adjlist(G, "resultados/visualizacao/lista.txt")
 
         return True
+
+    except Exception as e:
+        print(e)
+        return False
+
+
+# busca em largura
+def buscaLargura(G, vertice):
+    try:
+        if not os.path.isdir("resultados/busca"):
+            os.makedirs("resultados/busca")
+
+        A = nx.path_graph(G)
+        T = nx.dfs_tree(A, source=vertice).reverse().reverse()
+
+        with open('resultados/busca/buscaLargura.txt', 'w') as f:
+            f.write("vértice - pai - nível\n")
+            lista = list(T.nodes)
+
+            for i, node in tqdm(enumerate(T.nodes), total=len(lista)):
+                listaAnc = list(nx.ancestors(T, node))
+                pai = lista[i-1] if len(listaAnc) > 0 else 0
+                nivel = len(listaAnc)
+                f.write(f"{node} - {pai} - {nivel}\n")
+
+        # nx.draw_networkx(T)
+        # plt.show()
+
+    except Exception as e:
+        print(e)
+        return False
+
+
+def buscarComponentes(G):
+    try:
+        if not os.path.isdir("resultados/componentes"):
+            os.makedirs("resultados/componentes")
+
+        qnt = nx.number_connected_components(G)
+
+        with open('resultados/componentes/componentes.txt', 'w') as f:
+            f.write(f"Total de componentes: {qnt}\n")
+            for i, comp in tqdm(enumerate(nx.connected_components(G)), total=qnt):
+                lista = list(comp)
+                f.write(f"\n\nCompontente [{i}] - {len(lista)} vértices\n")
+                f.write(str(lista))
 
     except Exception as e:
         print(e)

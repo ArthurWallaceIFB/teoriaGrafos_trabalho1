@@ -1,5 +1,5 @@
-import functions;
-import tracemalloc;
+import functions
+import tracemalloc
 
 print("\n\n ------ Bem vindo ao nosso trabalho 1! ------ \n\n")
 
@@ -54,6 +54,8 @@ def main():
     print('Consumo de memória: ', f'{"{:.3f}".format(consumoMem / 10**6)}MB')
     # stopping the library
     tracemalloc.stop()
+    
+    functions.buscaLargura(G, '1')
     
 main()
 
