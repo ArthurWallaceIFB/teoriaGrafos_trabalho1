@@ -113,7 +113,7 @@ def buscaLargura(G, vertice):
         T = nx.dfs_tree(A, source=vertice).reverse().reverse()
 
         with open('resultados/busca/buscaLargura.txt', 'w') as f:
-            f.write("vértice - pai - nível\n")
+            f.write("vértice - pai - nível\n\n")
             lista = list(T.nodes)
 
             for i, node in tqdm(enumerate(T.nodes), total=len(lista)):
