@@ -136,14 +136,18 @@ def buscarComponentes(G):
             os.makedirs("resultados/componentes")
 
         qnt = nx.number_connected_components(G)
-
+        minimo = 100000
+        maximo = 0
         with open('resultados/componentes/componentes.txt', 'w') as f:
             f.write(f"Total de componentes: {qnt}\n")
             for i, comp in tqdm(enumerate(nx.connected_components(G)), total=qnt):
                 lista = list(comp)
+                if (len(lista) > maximo): maximo = len(lista)
+                if(len(lista) < minimo): minimo = len(lista)
                 f.write(f"\n\nCompontente [{i}] - {len(lista)} vértices\n")
                 f.write(str(lista))
 
+            f.write(f"\n\Mínimo [{minimo}] - maximo [{maximo}]\n")
     except Exception as e:
         print(e)
         return False
