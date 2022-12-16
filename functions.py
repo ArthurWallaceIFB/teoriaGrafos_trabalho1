@@ -77,7 +77,7 @@ def criarMatriz(G):
 
         A = nx.to_numpy_matrix(G)
         print("\n")
-        with open('resultados/visualizacao/matriz.txt', 'w') as f:
+        with open('resultados/visualizacao/matriz.zip', 'w') as f:
             for i, line in tqdm(enumerate(A), total=len(A)):
                 np.savetxt(f, line, fmt='%.0f')
 
@@ -151,3 +151,28 @@ def buscarComponentes(G):
     except Exception as e:
         print(e)
         return False
+
+def graficoGraus(G):
+    try:
+        if not os.path.isdir("resultados/componentes"):
+            os.makedirs("resultados/componentes")
+
+        degree_sequence = sorted((d for n, d in G.degree()), reverse=True)
+        dmax = max(degree_sequence)
+        print(dmax)
+        histograma = nx.degree_histogram(G)
+        fig, ax = plt.subplots()
+        plt.bar([k for k in range(len(histograma))], histograma, color='b')
+        plt.title("Distribuição de Graus")
+        plt.ylabel("Qnt")
+        plt.xlabel("Grau")
+        eixos = plt.gca()
+        #eixos.set_xlim([-0.5, xmax + 0.5])
+        eixos.set_ylim([0, 3000])
+        plt.show()
+        
+    except Exception as e:
+        print(e)
+        return False
+
+

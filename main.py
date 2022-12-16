@@ -24,6 +24,8 @@ def main():
         print("❌ Erro ao salvar o arquivo de saída! ❌")
         exit()
 
+    #a = functions.graficoGraus(G)
+    
     # Opções de visualização
     print("\nEscolha a forma de visualização que seja utilizar:")
     print("[ 1 ] Matriz de adjacências\n[ 2 ] Lista de adjacências\n[ 3 ] Lista e Matriz de adjacências\n")
